@@ -1,0 +1,63 @@
+pipeline{
+    agent any
+
+    environment{
+         IMAGE_NAME = "tongsure/automate"
+         IMAGE_TAG  = "lastest"
+    }
+
+    stages(
+        stage('Checkout Code'){
+            steps{
+               git ''
+            }
+        }
+
+
+        stage('Build Jar file'){
+           steps{
+              sh 'mvn clean package -DskipTests'
+           }
+        }
+
+        stage('build docker Image'){
+           steps{
+               sh '''
+                   docker build -t $IMAGE_NAME:$IMAGE_TAG .
+               '''
+           }
+        }
+
+        stage('Push Image to Docker hub'){
+            steps{
+               withDockerRegistry([credentialsId : 'docker-hub-credentials' , url: 'https://index.docker.io/v1/']){
+                  sh '''
+                     docker push $IMAGE_NAME:$IMAGE_TAG
+                  '''
+               }
+            }
+         }
+
+        stage('Deploy to Kubernetes'){
+            steps{
+               sh '''
+                   kubectl apply -f k8s/deployment.yaml
+               '''
+
+            }
+
+        }
+
+    )
+
+    post{
+      success{
+          echo '✅ Deployment Successful!'
+
+      }
+      failure{
+          echo '❌ Deployment Failed!'
+      }
+
+    }
+}
