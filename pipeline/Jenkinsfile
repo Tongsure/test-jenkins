@@ -50,14 +50,28 @@ pipeline{
 
     )
 
-    post{
-      success{
-          echo '✅ Deployment Successful!'
-
-      }
-      failure{
-          echo '❌ Deployment Failed!'
-      }
-
+    post {
+        success {
+            script {
+                 MESSAGE = "Hello from Jenkins! ✅ Build Successful."
+                sendMessage(MESSAGE)
+            }
+        }
+        failure {
+            script {
+                 MESSAGE = "🚨 Jenkins Build Failed. Please check the logs!"
+                 sendMessage(MESSAGE)
+            }
+        }
     }
+}
+def sendMessage(message) {
+    def url = "https://api.telegram.org/bot${BOT_TOKEN}/sendMessage"
+    def response = httpRequest(
+        acceptType: 'APPLICATION_JSON',
+        contentType: 'APPLICATION_JSON',
+        httpMode: 'POST',
+        url: "${url}?chat_id=${CHAT_ID}&text=${message}"
+    )
+    echo "Message sent to Telegram: ${response}"
 }
