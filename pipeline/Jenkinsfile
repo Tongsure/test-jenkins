@@ -1,3 +1,4 @@
+
 pipeline{
     agent any
 
@@ -5,11 +6,13 @@ pipeline{
          IMAGE_NAME = "tongsure/automate"
          IMAGE_TAG  = "lastest"
     }
-
+    tools {
+        git 'Default' // This ensures Jenkins uses the system-installed Git
+    }
     stages{
         stage('Checkout Code'){
             steps{
-               git 'https://github.com/Tongsure/test-jenkins.git'
+                git branch: 'dev', url: 'https://github.com/Tongsure/test-jenkins.git'
             }
         }
 
