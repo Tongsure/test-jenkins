@@ -53,13 +53,13 @@ pipeline{
     post {
         success {
             script {
-                 MESSAGE = "Hello from Jenkins! ✅ Build Successful."
+                 MESSAGE = "Hello from Jenkins! Build Successful."
                 sendMessage(MESSAGE)
             }
         }
         failure {
             script {
-                 MESSAGE = "🚨 Jenkins Build Failed. Please check the logs!"
+                 MESSAGE = "Jenkins Build Failed. Please check the logs!"
                  sendMessage(MESSAGE)
             }
         }
