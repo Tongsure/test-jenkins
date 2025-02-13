@@ -7,29 +7,29 @@ pipeline{
          IMAGE_TAG  = "lastest"
     }
     tools {
-        git 'Default' // This ensures Jenkins uses the system-installed Git
+           git 'git' // Ensure Git is installed and configured in Jenkins
     }
-    stages{
-        stage('Checkout Code'){
-            steps{
-                git branch: 'dev', url: 'https://github.com/Tongsure/test-jenkins.git'
-            }
-        }
 
-
-        stage('Build Jar file'){
-           steps{
-              sh 'mvn clean package -DskipTests'
+    stages {
+           stage('Checkout Code') {
+               steps {
+                   git credentialsId: 'github-credentials', branch: 'dev', url: 'https://github.com/Tongsure/test-jenkins.git'
+               }
            }
-        }
 
-        stage('build docker Image'){
-           steps{
-               sh '''
-                   docker build -t $IMAGE_NAME:$IMAGE_TAG .
-               '''
+           stage('Build Jar file') {
+               steps {
+                   sh 'mvn clean package -DskipTests'
+               }
            }
-        }
+
+           stage('Build Docker Image') {
+               steps {
+                   sh '''
+                       docker build -t $IMAGE_NAME:$IMAGE_TAG .
+                   '''
+               }
+           }
 
 //         stage('Push Image to Docker hub'){
 //             steps{
