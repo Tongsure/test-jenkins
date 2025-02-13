@@ -28,25 +28,25 @@ pipeline{
            }
         }
 
-        stage('Push Image to Docker hub'){
-            steps{
-               withDockerRegistry([credentialsId : 'docker-hub-credentials' , url: 'https://index.docker.io/v1/']){
-                  sh '''
-                     docker push $IMAGE_NAME:$IMAGE_TAG
-                  '''
-               }
-            }
-         }
-
-        stage('Deploy to Kubernetes'){
-            steps{
-               sh '''
-                   kubectl apply -f k8s/deployment.yaml
-               '''
-
-            }
-
-        }
+//         stage('Push Image to Docker hub'){
+//             steps{
+//                withDockerRegistry([credentialsId : 'docker-hub-credentials' , url: 'https://index.docker.io/v1/']){
+//                   sh '''
+//                      docker push $IMAGE_NAME:$IMAGE_TAG
+//                   '''
+//                }
+//             }
+//          }
+//
+//         stage('Deploy to Kubernetes'){
+//             steps{
+//                sh '''
+//                    kubectl apply -f k8s/deployment.yaml
+//                '''
+//
+//             }
+//
+//         }
 
     )
 
