@@ -17,7 +17,7 @@ import java.util.List;
 @RequestMapping("v1/test")
 public class cateController {
     @Autowired
-    private cateImplService cateImplService;  
+    private cateImplService cateImplService;       
     @GetMapping("/testdata")
     public List<reponseDto> findCust(@RequestParam  String custId) {
         return  cateImplService.findCust(custId);
