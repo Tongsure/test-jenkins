@@ -11,18 +11,28 @@ pipeline{
     }
 
     stages {
-           stage('Checkout Code') {
-               steps {
-                   git credentialsId: 'github-credentials', branch: 'dev', url: 'https://github.com/Tongsure/test-jenkins.git'
-               }
-           }
+          stage('Checkout Code') {
+              steps {
+                  checkout([$class: 'GitSCM',
+                      branches: [[name: '*/dev']],
+                      doGenerateSubmoduleConfigurations: false,
+                      extensions: [],
+                      submoduleCfg: [],
+                      userRemoteConfigs: [[
+                          url: 'https://github.com/Tongsure/test-jenkins.git',
+                          credentialsId: 'github-credentials'
+                      ]]
+                  ])
+              }
+          }
+
 
            stage('Build Jar file') {
                steps {
                    sh 'mvn clean package -DskipTests'
                }
            }
-
+d
            stage('Build Docker Image') {
                steps {
                    sh '''
