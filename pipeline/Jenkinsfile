@@ -6,9 +6,7 @@ pipeline{
          IMAGE_NAME = "tongsure/automate"
          IMAGE_TAG  = "lastest"
     }
-    tools {
-           git 'git' // Ensure Git is installed and configured in Jenkins
-    }
+
 
     stages {
 
